@@ -51,10 +51,10 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.query_form_search:
+            case R.id.form_search:
                 search((View) v.getParent());
                 break;
-            case R.id.query_form_reset:
+            case R.id.form_reset:
                 reset((View) v.getParent());
                 break;
         }
@@ -90,6 +90,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
         param.setLocation(location);
         Location coordinate = ((MyApplication)getActivity().getApplication()).getCurLocation();
         param.setCoordinate(coordinate.getLatitude(), coordinate.getLongitude());
+        param.setApi("nearbysearch");
 
         boolean passCheck = true;
 

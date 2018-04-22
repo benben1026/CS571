@@ -11,6 +11,7 @@ public class SearchParam {
     String location;
     Double lat, lng;
     String nextToken;
+    String api;
 
     public SearchParam(){
         this.nextToken = null;
@@ -41,6 +42,10 @@ public class SearchParam {
         this.lng = lng;
     }
 
+    public void setApi(String api){
+        this.api = api;
+    }
+
     public void setNextToken(String nextToken){
         this.nextToken = nextToken;
     }
@@ -55,7 +60,7 @@ public class SearchParam {
 
     public String getUri(Activity activity){
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme("http").authority(activity.getResources().getString(R.string.server_domain)).appendPath("nearbysearch");
+        builder.scheme("http").authority(activity.getResources().getString(R.string.server_domain)).appendPath(this.api);
         if (this.nextToken != null){
             builder.appendQueryParameter("pagetoken", this.nextToken);
         } else {
