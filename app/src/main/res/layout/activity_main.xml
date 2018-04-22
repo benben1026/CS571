@@ -1,33 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
-    <RelativeLayout
+    android:layout_height="match_parent">
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:padding="20dp">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            android:id="@+id/keyword_label"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
+            android:text="Keyword"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/keyword_warning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Please enter mandatory field"
+            android:textColor="@android:color/holo_red_light"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/keyword_label" />
+
+        <EditText
+            android:id="@+id/keyword_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter keyword"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/keyword_warning" />
+
+        <TextView
+            android:id="@+id/category_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            app:layout_constraintTop_toBottomOf="@id/keyword_input" />
+
+        <Spinner
+            android:id="@+id/category_spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/category_array"
+            app:layout_constraintTop_toBottomOf="@id/category_label" />
+
+        <TextView
+            android:id="@+id/distance_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Distance (in miles)"
+            app:layout_constraintTop_toBottomOf="@id/category_spinner" />
+
+        <EditText
+            android:id="@+id/distance_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter distance (default 10 miles)"
+            android:inputType="number"
+            app:layout_constraintTop_toBottomOf="@id/distance_label" />
+
+        <TextView
+            android:id="@+id/from_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="From"
+            app:layout_constraintTop_toBottomOf="@id/distance_input" />
+
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/from_group"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:checkedButton="@id/from_option_current"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/from_label">
+
+            <RadioButton
+                android:id="@+id/from_option_current"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current location" />
+
+            <RadioButton
+                android:id="@+id/from_option_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Other. Specify Location" />
+
+            <TextView
+                android:id="@+id/from_location_warning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Please enter mandatory field"
+                android:textColor="@android:color/holo_red_light"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/keyword_label" />
+
+            <AutoCompleteTextView
+                android:id="@+id/from_location_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:hint="Type in the Location"
+                android:inputType="text" />
+        </RadioGroup>
+
         <Button
-            android:id="@+id/button"
+            android:id="@+id/query_form_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView"
-            android:text="Hello"
-            tools:layout_editor_absoluteX="148dp"
-            tools:layout_editor_absoluteY="166dp" />
+            android:minWidth="170dp"
+            android:text="SEARCH"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/query_form_reset"
+            app:layout_constraintTop_toBottomOf="@id/from_group" />
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/query_form_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="170dp"
+            android:text="RESET"
+            app:layout_constraintLeft_toRightOf="@id/query_form_search"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/from_group" />
 
-</android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>
