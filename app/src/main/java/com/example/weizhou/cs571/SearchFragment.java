@@ -1,17 +1,15 @@
 package com.example.weizhou.cs571;
 
-import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationManager;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -23,37 +21,31 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Objects;
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
+public class SearchFragment extends Fragment implements View.OnClickListener{
     ProgressDialog progressDialog;
 
+    public SearchFragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        boolean hasPermission = false;
-        if (ActivityCompat.checkSelfPermission(Objects.requireNonNull(this), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            hasPermission = true;
-        }
-        if (!hasPermission) {
-            Log.i("Location", "Not has permission");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-        }
-        if (hasPermission) {
-            Log.i("Location", "Has permission");
-            LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-            Objects.requireNonNull(locationManager).requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 100, ((MyApplication)getApplication()).getLocationListener());
-        }
-        Button button = findViewById(R.id.query_form_search);
-        button.setOnClickListener(this);
-        button = findViewById(R.id.query_form_reset);
-        button.setOnClickListener(this);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        final View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        view.findViewById(R.id.form_search).setOnClickListener(this);
+        view.findViewById(R.id.form_reset).setOnClickListener(this);
+
+        return view;
     }
 
     @Override
@@ -96,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         param.setDistance(distance);
         param.setFrom(from);
         param.setLocation(location);
-        Location coordinate = ((MyApplication)this.getApplication()).getCurLocation();
+        Location coordinate = ((MyApplication)getActivity().getApplication()).getCurLocation();
         param.setCoordinate(coordinate.getLatitude(), coordinate.getLongitude());
 
         boolean passCheck = true;
@@ -112,10 +104,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         if(!passCheck) return;
 
-        progressDialog = ProgressDialog.show(this, null, "Fetching results", true);
-        System.out.println(param.getUri(this));
-        final Intent searchToResultIntent = new Intent(this, ResultActivity.class);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, param.getUri(this), null, new Response.Listener<JSONObject>() {
+        progressDialog = ProgressDialog.show(getActivity(), null, "Fetching results", true);
+        System.out.println(param.getUri(getActivity()));
+        final Intent searchToResultIntent = new Intent(getActivity(), ResultActivity.class);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, param.getUri(getActivity()), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 searchToResultIntent.putExtra("results", response.toString());
@@ -129,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 progressDialog.dismiss();
             }
         });
-        MyApplication application = (MyApplication) this.getApplication();
+        MyApplication application = (MyApplication) getActivity().getApplication();
         application.getRequestQueue().add(request);
     }
 
@@ -149,4 +141,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         EditText locationInput = v.findViewById(R.id.from_location_input);
         locationInput.setText("");
     }
+
 }
