@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.LinearLayout;
@@ -84,6 +85,11 @@ public class FirstPageActivity extends AppCompatActivity implements ActivityComp
             @Override
             public void onPageScrollStateChanged(int state) { }
         });
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setTitle("Places Search");
+        }
 
     }
 }
