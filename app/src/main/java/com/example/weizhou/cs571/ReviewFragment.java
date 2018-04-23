@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InfoFragment extends Fragment {
+public class ReviewFragment extends Fragment {
 
 
-    public InfoFragment() {
+    public ReviewFragment() {
         // Required empty public constructor
     }
 
@@ -22,10 +22,8 @@ public class InfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_info, container, false);
-        ((DetailActivity)getActivity()).itemDetailManager.setInfoView(view);
         // Inflate the layout for this fragment
-        return view;
+        return inflater.inflate(R.layout.fragment_review, container, false);
     }
 
 }

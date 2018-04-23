@@ -1,14 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context=".InfoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+        <!-- TODO: Update blank fragment layout -->
+        <TextView
+            android:id="@+id/address_name"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Address"
+            app:layout_constraintRight_toLeftOf="@+id/address_value"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+        <TextView
+            android:id="@+id/address_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="address_value"
+            android:singleLine="false"
+            app:layout_constraintLeft_toRightOf="@+id/address_name"/>
+
+        <TextView
+            android:id="@+id/phone_name"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Phone Number"
+            app:layout_constraintRight_toLeftOf="@+id/phone_value"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/address_name"/>
+        <TextView
+            android:id="@+id/phone_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="phone_value"
+            android:singleLine="false"
+            app:layout_constraintLeft_toRightOf="@+id/phone_name"
+            app:layout_constraintTop_toBottomOf="@+id/address_value"/>
+
+        <TextView
+            android:id="@+id/price_level_name"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Price Level"
+            app:layout_constraintRight_toLeftOf="@+id/price_level_value"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone_name"/>
+        <TextView
+            android:id="@+id/price_level_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="price_value"
+            app:layout_constraintLeft_toRightOf="@+id/price_level_name"
+            app:layout_constraintTop_toBottomOf="@+id/phone_value"/>
+
+        <TextView
+            android:id="@+id/rating_name"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Rating"
+            app:layout_constraintRight_toLeftOf="@+id/rating_value"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/price_level_name"/>
+        <TextView
+            android:id="@+id/rating_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="rating"
+            app:layout_constraintLeft_toRightOf="@+id/rating_name"
+            app:layout_constraintTop_toBottomOf="@+id/price_level_value"/>
+
+        <TextView
+            android:id="@+id/google_page_name"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Google Page"
+            android:singleLine="false"
+            app:layout_constraintRight_toLeftOf="@+id/google_page_value"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rating_name"/>
+        <TextView
+            android:id="@+id/google_page_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="google page"
+            app:layout_constraintLeft_toRightOf="@+id/google_page_name"
+            app:layout_constraintTop_toBottomOf="@+id/rating_value"/>
+
+        <TextView
+            android:id="@+id/website_name"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Website"
+            android:singleLine="false"
+            app:layout_constraintRight_toLeftOf="@+id/website_value"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/google_page_name"/>
+        <TextView
+            android:id="@+id/website_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="website"
+            app:layout_constraintLeft_toRightOf="@+id/website_name"
+            app:layout_constraintTop_toBottomOf="@+id/google_page_value"/>
+    </android.support.constraint.ConstraintLayout>
 
 </FrameLayout>

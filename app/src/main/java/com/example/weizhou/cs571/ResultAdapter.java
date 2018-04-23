@@ -2,6 +2,7 @@ package com.example.weizhou.cs571;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -46,9 +47,17 @@ public class ResultAdapter extends ArrayAdapter<ResultItem> {
             convertView = LayoutInflater.from(this.ctx).inflate(R.layout.result_item, parent, false);
         }
 
-        ResultItem item = this.data.get(position + this.startIndex);
+        final ResultItem item = this.data.get(position + this.startIndex);
 
-        //TODO: add detail event listener
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //ItemDetailManager.getDetail((Activity)ctx);
+                Intent intent = new Intent(ctx, DetailActivity.class);
+                intent.putExtra("placeId", item.placeId);
+                ctx.startActivity(intent);
+            }
+        });
 
         ImageView img = convertView.findViewById(R.id.result_img);
         new DownloadImageTask(img).execute(item.icon);
