@@ -8,12 +8,16 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -24,11 +28,13 @@ public class ResultAdapter extends ArrayAdapter<ResultItem> {
     private Context ctx;
     private ArrayList<ResultItem> data;
     private int startIndex;
+    ImageLoader mImageLoader;
 
     ResultAdapter(Context ctx, ArrayList<ResultItem> data){
         super(ctx, 0, data);
         this.data = data;
         this.ctx = ctx;
+        mImageLoader = new ImageLoader(((MyApplication)(((Activity)ctx).getApplication())).getRequestQueue(), new BitmapCache());
     }
 
     public void setStartIndex(int index){
@@ -43,35 +49,37 @@ public class ResultAdapter extends ArrayAdapter<ResultItem> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        View view;
         if (convertView == null) {
-            convertView = LayoutInflater.from(this.ctx).inflate(R.layout.result_item, parent, false);
+            view = LayoutInflater.from(this.ctx).inflate(R.layout.result_item, parent, false);
+        } else {
+            view = convertView;
         }
 
         final ResultItem item = this.data.get(position + this.startIndex);
 
-        convertView.setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //ItemDetailManager.getDetail((Activity)ctx);
                 Intent intent = new Intent(ctx, DetailActivity.class);
                 intent.putExtra("placeId", item.placeId);
                 ctx.startActivity(intent);
             }
         });
 
-        ImageView img = convertView.findViewById(R.id.result_img);
-        new DownloadImageTask(img).execute(item.icon);
+        NetworkImageView image = view.findViewById(R.id.result_img);
+        image.setImageUrl(item.icon, mImageLoader);
 
-        TextView name = convertView.findViewById(R.id.result_name);
+        TextView name = view.findViewById(R.id.result_name);
         name.setText(item.name);
 
-        TextView vicinity = convertView.findViewById(R.id.result_vicinity);
+        TextView vicinity = view.findViewById(R.id.result_vicinity);
         vicinity.setText(item.vicinity);
 
         //TODO: check favorite list
         final FavoriteManager fm = ((MyApplication)((Activity)ctx).getApplication()).getFavoriteManager();
         final ResultAdapter ra = this;
-        ImageView favorite = convertView.findViewById(R.id.result_favorite);
+        ImageView favorite = view.findViewById(R.id.result_favorite);
         if (fm.contain(item.placeId)){
             favorite.setImageResource(R.drawable.ic_favorite_red_24dp);
         } else {
@@ -88,7 +96,7 @@ public class ResultAdapter extends ArrayAdapter<ResultItem> {
             }
         });
 
-        return convertView;
+        return view;
     }
 }
 

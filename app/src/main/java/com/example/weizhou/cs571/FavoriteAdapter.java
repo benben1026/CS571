@@ -2,6 +2,7 @@ package com.example.weizhou.cs571;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,16 +12,21 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.ArrayList;
 
 public class FavoriteAdapter extends ArrayAdapter<ResultItem> {
     Context ctx;
     ArrayList<ResultItem> data;
+    ImageLoader mImageLoader;
 
     FavoriteAdapter(Context ctx, ArrayList<ResultItem> data){
         super(ctx, 0, data);
         this.data = data;
         this.ctx = ctx;
+        mImageLoader = new ImageLoader(((MyApplication)(((Activity)ctx).getApplication())).getRequestQueue(), new BitmapCache());
     }
 
     @Override
@@ -31,24 +37,35 @@ public class FavoriteAdapter extends ArrayAdapter<ResultItem> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        View view;
         if (convertView == null) {
-            convertView = LayoutInflater.from(this.ctx).inflate(R.layout.result_item, parent, false);
+            view = LayoutInflater.from(this.ctx).inflate(R.layout.result_item, parent, false);
+        } else {
+            view = convertView;
         }
 
-        ResultItem item = this.data.get(position);
+        final ResultItem item = this.data.get(position);
 
-        //TODO: add detail event listener
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ctx, DetailActivity.class);
+                intent.putExtra("placeId", item.placeId);
+                ctx.startActivity(intent);
+            }
+        });
 
-        ImageView img = convertView.findViewById(R.id.result_img);
-        new DownloadImageTask(img).execute(item.icon);
 
-        TextView name = convertView.findViewById(R.id.result_name);
+        NetworkImageView image = view.findViewById(R.id.result_img);
+        image.setImageUrl(item.icon, mImageLoader);
+
+        TextView name = view.findViewById(R.id.result_name);
         name.setText(item.name);
 
-        TextView vicinity = convertView.findViewById(R.id.result_vicinity);
+        TextView vicinity = view.findViewById(R.id.result_vicinity);
         vicinity.setText(item.vicinity);
 
-        ImageView favorite = convertView.findViewById(R.id.result_favorite);
+        ImageView favorite = view.findViewById(R.id.result_favorite);
         favorite.setImageResource(R.drawable.ic_favorite_red_24dp);
         favorite.setTag(item);
 
@@ -61,6 +78,6 @@ public class FavoriteAdapter extends ArrayAdapter<ResultItem> {
             }
         });
 
-        return convertView;
+        return view;
     }
 }
