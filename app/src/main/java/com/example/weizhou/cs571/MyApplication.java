@@ -14,7 +14,7 @@ public class MyApplication extends Application {
     RequestQueue requestQueue;
     Location curLocation;
     LocationListener locationListener;
-    //FavoriteManager favoriteManager;
+    FavoriteManager favoriteManager;
 
     public RequestQueue getRequestQueue() {
         return requestQueue;
@@ -32,12 +32,12 @@ public class MyApplication extends Application {
         curLocation = location;
     }
 
-    //public FavoriteManager getFavoriteManager() { return favoriteManager; }
+    public FavoriteManager getFavoriteManager() { return favoriteManager; }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        //favoriteManager = new FavoriteManager(this);
+        favoriteManager = new FavoriteManager();
         requestQueue =  Volley.newRequestQueue(this);
         locationListener = new LocationListener() {
             @Override

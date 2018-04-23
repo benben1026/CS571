@@ -1,5 +1,6 @@
 package com.example.weizhou.cs571;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+
+import javax.xml.transform.Result;
 
 public class ResultAdapter extends ArrayAdapter<ResultItem> {
     private Context ctx;
@@ -57,11 +60,24 @@ public class ResultAdapter extends ArrayAdapter<ResultItem> {
         vicinity.setText(item.vicinity);
 
         //TODO: check favorite list
+        final FavoriteManager fm = ((MyApplication)((Activity)ctx).getApplication()).getFavoriteManager();
+        final ResultAdapter ra = this;
         ImageView favorite = convertView.findViewById(R.id.result_favorite);
-        favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+        if (fm.contain(item.placeId)){
+            favorite.setImageResource(R.drawable.ic_favorite_red_24dp);
+        } else {
+            favorite.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+        }
         favorite.setTag(item);
 
-        //TODO: add favorite click event listener
+        favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fm.onFavoriteClick((ResultItem)v.getTag());
+                ra.notifyDataSetChanged();
+                fm.updateMsg();
+            }
+        });
 
         return convertView;
     }
