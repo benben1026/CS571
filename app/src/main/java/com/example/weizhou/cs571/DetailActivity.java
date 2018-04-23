@@ -1,9 +1,10 @@
 package com.example.weizhou.cs571;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
@@ -55,6 +56,11 @@ public class DetailActivity extends AppCompatActivity {
 
         itemDetailManager = new ItemDetailManager(this, getIntent().getStringExtra("placeId"));
 
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null) {
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override

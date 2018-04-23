@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.util.Linkify;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -130,7 +131,13 @@ public class ItemDetailManager {
         Linkify.addLinks(phoneTextView, Linkify.PHONE_NUMBERS);
 
         ((TextView)this.infoView.findViewById(R.id.price_level_value)).setText(String.valueOf(this.item.getPriceLevel()));
-        ((TextView)this.infoView.findViewById(R.id.rating_value)).setText(String.valueOf(this.item.getRating()));
+        //((TextView)this.infoView.findViewById(R.id.rating_value)).setText(String.valueOf(this.item.getRating()));
+        //Display rating star, if rate == -1, set the whole layout invisible
+        if(this.item.getRating() == -1) {
+            this.infoView.findViewById(R.id.linear_rating_name).setVisibility(View.GONE);
+        } else {
+            ((RatingBar)this.infoView.findViewById(R.id.raing_star)).setRating(this.item.getRating());
+        }
 
         TextView googlePageTextView = this.infoView.findViewById(R.id.google_page_value);
         googlePageTextView.setText(String.valueOf(this.item.getGooglePage()));

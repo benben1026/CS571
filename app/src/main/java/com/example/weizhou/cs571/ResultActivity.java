@@ -1,16 +1,12 @@
 package com.example.weizhou.cs571;
 
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Objects;
 
@@ -33,7 +29,6 @@ public class ResultActivity extends AppCompatActivity {
                 (Button) findViewById(R.id.result_previous), (Button) findViewById(R.id.result_next));
         rm.parseData(getIntent().getStringExtra("results"));
         rm.display(1);
-
     }
 
     @Override
