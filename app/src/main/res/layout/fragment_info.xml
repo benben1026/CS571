@@ -5,115 +5,169 @@
     android:layout_height="wrap_content"
     tools:context=".InfoFragment">
 
-    <android.support.constraint.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_marginTop="@dimen/info_top_margin"
-        android:padding="20dp">
+        android:layout_marginLeft="@dimen/info_left_margin">
+
         <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:id="@+id/address_name"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:text="Address"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/address_value" />
 
-        <TextView
-            android:id="@+id/address_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:text="address_value"
-            app:layout_constraintLeft_toRightOf="@+id/address_name" />
+        <LinearLayout
+            android:id="@+id/linear_address_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/address_name"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                android:text="Address"/>
 
-        <TextView
-            android:id="@+id/phone_name"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:text="Phone Number"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/phone_value"
-            app:layout_constraintTop_toBottomOf="@+id/address_name" />
+            <TextView
+                android:id="@+id/address_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:text="address_value"
+                />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/phone_value"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linear_phone_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:text="phone_value"
-            app:layout_constraintLeft_toRightOf="@+id/phone_name"
-            app:layout_constraintTop_toBottomOf="@+id/address_value" />
+            android:layout_marginTop="@dimen/info_top_interval"
+            >
+            <TextView
+                android:id="@+id/phone_name"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                android:text="Phone Number"
+                />
 
-        <TextView
-            android:id="@+id/price_level_name"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:text="Price Level"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/price_level_value"
-            app:layout_constraintTop_toBottomOf="@+id/phone_name" />
+            <TextView
+                android:id="@+id/phone_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="false"
+                android:text="phone_value"
+                />
 
-        <TextView
-            android:id="@+id/price_level_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="price_value"
-            app:layout_constraintLeft_toRightOf="@+id/price_level_name"
-            app:layout_constraintTop_toBottomOf="@+id/phone_value" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/rating_name"
-            android:layout_width="130dp"
+        <LinearLayout
+            android:id="@+id/linear_price_level_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Rating"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/rating_value"
-            app:layout_constraintTop_toBottomOf="@+id/price_level_name" />
+            android:layout_marginTop="@dimen/info_top_interval"
+            >
+            <TextView
+                android:id="@+id/price_level_name"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                android:text="Price Level"
+                />
 
-        <TextView
-            android:id="@+id/rating_value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="rating"
-            app:layout_constraintLeft_toRightOf="@+id/rating_name"
-            app:layout_constraintTop_toBottomOf="@+id/price_level_value" />
+            <TextView
+                android:id="@+id/price_level_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="price_value"
+                />
 
-        <TextView
-            android:id="@+id/google_page_name"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:text="Google Page"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/google_page_value"
-            app:layout_constraintTop_toBottomOf="@+id/rating_name" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/google_page_value"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linear_rating_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="google page"
-            app:layout_constraintLeft_toRightOf="@+id/google_page_name"
-            app:layout_constraintTop_toBottomOf="@+id/rating_value" />
+            android:layout_marginTop="@dimen/info_top_interval"
+            >
+            <TextView
+                android:id="@+id/rating_name"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                android:text="Rating"
+                />
 
-        <TextView
-            android:id="@+id/website_name"
-            android:layout_width="130dp"
-            android:layout_height="wrap_content"
-            android:singleLine="false"
-            android:text="Website"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@+id/website_value"
-            app:layout_constraintTop_toBottomOf="@+id/google_page_name" />
+            <TextView
+                android:id="@+id/rating_value"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:text="rating"
+                />
 
-        <TextView
-            android:id="@+id/website_value"
-            android:layout_width="wrap_content"
+            <RatingBar
+                style="@style/Widget.AppCompat.RatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:isIndicator="true"
+                android:scaleX=".5"
+                android:scaleY=".5"
+                android:transformPivotX="0dp"
+                android:transformPivotY="0dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_google_page_name"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="website"
-            app:layout_constraintLeft_toRightOf="@+id/website_name"
-            app:layout_constraintTop_toBottomOf="@+id/google_page_value" />
-    </android.support.constraint.ConstraintLayout>
+            >
+            <TextView
+                android:id="@+id/google_page_name"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                android:singleLine="false"
+                android:text="Google Page"
+                />
+
+            <TextView
+                android:id="@+id/google_page_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="google page"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_website_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/info_top_interval"
+            >
+            <TextView
+                android:id="@+id/website_name"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"
+                android:singleLine="false"
+                android:text="Website"
+                />
+
+            <TextView
+                android:id="@+id/website_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="website"
+                />
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
 
 </FrameLayout>
