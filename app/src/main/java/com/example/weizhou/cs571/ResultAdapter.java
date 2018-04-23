@@ -76,7 +76,6 @@ public class ResultAdapter extends ArrayAdapter<ResultItem> {
         TextView vicinity = view.findViewById(R.id.result_vicinity);
         vicinity.setText(item.vicinity);
 
-        //TODO: check favorite list
         final FavoriteManager fm = ((MyApplication)((Activity)ctx).getApplication()).getFavoriteManager();
         final ResultAdapter ra = this;
         ImageView favorite = view.findViewById(R.id.result_favorite);

@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.text.util.Linkify;
 import android.view.View;
 import android.widget.RatingBar;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -25,7 +26,10 @@ public class ItemDetailManager {
     public ItemDetail item;
     public Activity activity;
     public View infoView;
+    public ListView photoListView;
+    public TextView photoTextView;
 
+    private PhotoAdapter photoAdapter;
     private int photoIndex;
     private GeoDataClient mGeoDataClient;
 
@@ -57,6 +61,7 @@ public class ItemDetailManager {
 
 
         this.photoIndex = 0;
+        this.photoAdapter = new PhotoAdapter(activity, this.item.getPhotos());
 
         mGeoDataClient = Places.getGeoDataClient(activity, null);
         final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(placeId);
@@ -88,6 +93,8 @@ public class ItemDetailManager {
                 item.addPhoto(bitmap);
                 photoIndex ++;
                 photoLoadingCallback(photoMetadataBuffer);
+                photoTextView.setVisibility(View.INVISIBLE);
+                photoAdapter.notifyDataSetChanged();
             }
         });
     }
@@ -120,6 +127,12 @@ public class ItemDetailManager {
         this.infoView = view;
     }
 
+    public void setPhotoView(ListView photoListView, TextView photoTextView){
+        this.photoListView = photoListView;
+        this.photoListView.setAdapter(this.photoAdapter);
+        this.photoTextView = photoTextView;
+    }
+
     public void displayInfo(){
         if (this.infoView == null){
             return;
@@ -136,7 +149,7 @@ public class ItemDetailManager {
         if(this.item.getRating() == -1) {
             this.infoView.findViewById(R.id.linear_rating_name).setVisibility(View.GONE);
         } else {
-            ((RatingBar)this.infoView.findViewById(R.id.raing_star)).setRating(this.item.getRating());
+            ((RatingBar)this.infoView.findViewById(R.id.rating_star)).setRating(this.item.getRating());
         }
 
         TextView googlePageTextView = this.infoView.findViewById(R.id.google_page_value);
@@ -148,4 +161,5 @@ public class ItemDetailManager {
         Linkify.addLinks(websiteTextView, Linkify.WEB_URLS);
 
     }
+
 }

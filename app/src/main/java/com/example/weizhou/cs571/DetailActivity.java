@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 
 import java.util.Objects;
 
@@ -52,7 +53,6 @@ public class DetailActivity extends AppCompatActivity {
         });
 
         viewPager.setAdapter(new DetailTabViewAdapter(getSupportFragmentManager()));
-
 
         itemDetailManager = new ItemDetailManager(this, getIntent().getStringExtra("placeId"));
 

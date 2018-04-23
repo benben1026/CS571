@@ -86,5 +86,9 @@ public class ItemDetail {
     public void addPhoto(Bitmap photo){
         this.photos.add(photo);
     }
+
+    public ArrayList<Bitmap> getPhotos() {
+        return photos;
+    }
 }
 
