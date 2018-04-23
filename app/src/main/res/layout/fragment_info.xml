@@ -12,7 +12,6 @@
         android:layout_marginTop="@dimen/info_top_margin"
         android:layout_marginLeft="@dimen/info_left_margin">
 
-        <!-- TODO: Update blank fragment layout -->
 
         <LinearLayout
             android:id="@+id/linear_address_name"

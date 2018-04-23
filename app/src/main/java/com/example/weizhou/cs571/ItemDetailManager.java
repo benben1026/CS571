@@ -2,7 +2,9 @@ package com.example.weizhou.cs571;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.text.util.Linkify;
 import android.view.View;
 import android.widget.TextView;
@@ -11,6 +13,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.location.places.*;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +24,9 @@ public class ItemDetailManager {
     public ItemDetail item;
     public Activity activity;
     public View infoView;
+
+    private int photoIndex;
+    private GeoDataClient mGeoDataClient;
 
     ItemDetailManager(Activity activity, final String placeId){
         this.item = new ItemDetail(placeId);
@@ -46,6 +54,41 @@ public class ItemDetailManager {
         MyApplication application = (MyApplication) activity.getApplication();
         application.getRequestQueue().add(request);
 
+
+        this.photoIndex = 0;
+
+        mGeoDataClient = Places.getGeoDataClient(activity, null);
+        final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(placeId);
+        photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
+                // Get the list of photos.
+                PlacePhotoMetadataResponse photos = task.getResult();
+                // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
+                PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                photoLoadingCallback(photoMetadataBuffer);
+            }
+        });
+    }
+
+    private void photoLoadingCallback(final PlacePhotoMetadataBuffer photoMetadataBuffer){
+        PlacePhotoMetadata photoMetadata;
+        try{
+            photoMetadata = photoMetadataBuffer.get(this.photoIndex);
+        } catch(Exception e){
+            return;
+        }
+        Task<PlacePhotoResponse> photoResponse = mGeoDataClient.getPhoto(photoMetadata);
+        photoResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoResponse>() {
+            @Override
+            public void onComplete(@NonNull Task<PlacePhotoResponse> task) {
+                PlacePhotoResponse photo = task.getResult();
+                Bitmap bitmap = photo.getBitmap();
+                item.addPhoto(bitmap);
+                photoIndex ++;
+                photoLoadingCallback(photoMetadataBuffer);
+            }
+        });
     }
 
     public void parseDate(JSONObject data){

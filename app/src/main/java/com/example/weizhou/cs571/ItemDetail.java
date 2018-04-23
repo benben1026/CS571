@@ -1,5 +1,9 @@
 package com.example.weizhou.cs571;
 
+import android.graphics.Bitmap;
+
+import java.util.ArrayList;
+
 public class ItemDetail {
     private String placeId;
     private String name;
@@ -9,6 +13,7 @@ public class ItemDetail {
     private float rating;
     private String googlePage;
     private String website;
+    private ArrayList<Bitmap> photos;
 
     ItemDetail(String placeId){
         this.placeId = placeId;
@@ -19,6 +24,7 @@ public class ItemDetail {
         this.rating = -1;
         this.googlePage = null;
         this.website = null;
+        this.photos = new ArrayList<Bitmap>();
     }
 
     public void setName(String name){
@@ -75,6 +81,10 @@ public class ItemDetail {
 
     public String getWebsite(){
         return this.website;
+    }
+
+    public void addPhoto(Bitmap photo){
+        this.photos.add(photo);
     }
 }
 
