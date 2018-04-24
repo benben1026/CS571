@@ -84,12 +84,11 @@
 
         </LinearLayout>
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/linear_rating_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/info_top_interval"
-
             >
             <TextView
                 android:id="@+id/rating_name"
@@ -99,28 +98,27 @@
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
                 android:text="Rating"
+
                 />
 
             <TextView
                 android:id="@+id/rating_value"
-                android:layout_width="1dp"
-                android:layout_height="1dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:text="rating"
                 />
 
             <RatingBar
-                style="@style/Widget.AppCompat.RatingBar"
+                style="@style/myRatingBar"
                 android:id="@+id/rating_star"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginTop="15dp"
-                android:layout_alignParentRight="true"
+                android:layout_height="wrap_content"
                 android:isIndicator="true"
-                android:scaleX=".5"
-                android:scaleY=".5"
+                android:scaleX=".8"
+                android:scaleY=".8"
                 android:transformPivotX="0dp"
                 android:transformPivotY="0dp" />
-        </RelativeLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/linear_google_page_name"
