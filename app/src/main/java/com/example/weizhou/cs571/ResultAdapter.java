@@ -63,6 +63,7 @@ public class ResultAdapter extends ArrayAdapter<ResultItem> {
             public void onClick(View v) {
                 Intent intent = new Intent(ctx, DetailActivity.class);
                 intent.putExtra("placeId", item.placeId);
+                intent.putExtra("name", item.name);
                 ctx.startActivity(intent);
             }
         });

@@ -60,6 +60,7 @@ public class DetailActivity extends AppCompatActivity {
         if(actionBar != null) {
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(getIntent().getStringExtra("name"));
         }
     }
 
