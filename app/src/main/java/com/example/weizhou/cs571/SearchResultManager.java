@@ -92,7 +92,10 @@ public class SearchResultManager {
 
         } catch (JSONException e) {
             e.printStackTrace();
-            //TODO: handle error case
+            this.resultInfo.setText("Data Error");
+            this.resultInfo.setVisibility(View.VISIBLE);
+            this.previousPageBtn.setEnabled(false);
+            this.nextPageBtn.setEnabled(false);
             return;
         }
         try{
@@ -102,11 +105,20 @@ public class SearchResultManager {
                     JSONObject d = dataArray.getJSONObject(i);
                     this.addItem(new ResultItem(d.getString("place_id"), d.getString("icon"), d.getString("name"), d.getString("vicinity")));
                 }
+                this.resultInfo.setVisibility(View.INVISIBLE);
             } else if(dataObject.getString("status").equalsIgnoreCase("ZERO_RESULTS")){
-                //TODO
+                this.resultInfo.setText("No Results found.");
+                this.resultInfo.setVisibility(View.VISIBLE);
+                this.previousPageBtn.setEnabled(false);
+                this.nextPageBtn.setEnabled(false);
+                return;
             }
         } catch (JSONException e){
-            //TODO
+            this.resultInfo.setText("Data Error");
+            this.resultInfo.setVisibility(View.VISIBLE);
+            this.previousPageBtn.setEnabled(false);
+            this.nextPageBtn.setEnabled(false);
+            return;
         }
         try {
             this.nextToken = dataObject.getString("next_page_token");
@@ -116,6 +128,9 @@ public class SearchResultManager {
     }
 
     public void display(int page){
+        if (this.results.size() == 0) {
+            return;
+        }
         System.out.println("page=" + page);
         System.out.println("size=" + results.size());
         this.page = page;

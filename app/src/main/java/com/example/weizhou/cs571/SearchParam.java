@@ -22,7 +22,7 @@ public class SearchParam {
     }
 
     public void setCategory(String category){
-        this.category = category;
+        this.category = category.toLowerCase().replace(" ", "_");
     }
 
     public void setDistance(int distance){
@@ -55,7 +55,7 @@ public class SearchParam {
     }
 
     boolean checkLocation() {
-        return this.from.equals("current") || !this.location.isEmpty();
+        return this.from.equals("here") || !this.location.isEmpty();
     }
 
     public String getUri(Activity activity){
@@ -70,6 +70,7 @@ public class SearchParam {
             builder.appendQueryParameter("lat", String.valueOf(this.lat));
             builder.appendQueryParameter("lng", String.valueOf(this.lng));
             builder.appendQueryParameter("location", this.location);
+            builder.appendQueryParameter("category", this.category);
         }
         return builder.build().toString();
     }
