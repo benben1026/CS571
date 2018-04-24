@@ -6,13 +6,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="5">
 
-        <ImageView
+        <com.android.volley.toolbox.NetworkImageView
             android:id="@+id/reviewer_img"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:src="@drawable/ic_android_black_24dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

@@ -19,17 +19,23 @@ import com.google.android.gms.location.places.*;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ItemDetailManager {
     public ItemDetail item;
     public Activity activity;
-    public View infoView;
-    public ListView photoListView;
-    public TextView photoTextView;
+
+    private View infoView;
+    private ListView photoListView;
+    private TextView photoTextView;
+    private ListView reviewListView;
+    private TextView reviewTextView;
 
     private PhotoAdapter photoAdapter;
+    private ReviewAdapter reviewAdapter;
+
     private int photoIndex;
     private GeoDataClient mGeoDataClient;
 
@@ -47,6 +53,7 @@ public class ItemDetailManager {
                 parseDate(response);
                 displayInfo();
                 progressDialog.dismiss();
+                reviewAdapter.notifyDataSetChanged();
             }
         }, new Response.ErrorListener(){
             @Override
@@ -75,6 +82,8 @@ public class ItemDetailManager {
                 photoLoadingCallback(photoMetadataBuffer);
             }
         });
+
+        this.reviewAdapter = new ReviewAdapter(activity, this.item.getGoogleReviews());
     }
 
     private void photoLoadingCallback(final PlacePhotoMetadataBuffer photoMetadataBuffer){
@@ -116,6 +125,19 @@ public class ItemDetailManager {
                     this.item.setGooglePage(result.getString("url"));
                 if (result.has("website"))
                     this.item.setWebsite(result.getString("website"));
+                if (result.has("reviews")){
+                    JSONArray reviews = result.getJSONArray("reviews");
+                    for (int i = 0; i < reviews.length(); i++){
+                        JSONObject reviewObject = (JSONObject) reviews.get(i);
+                        Review r = new Review();
+                        r.authorName = reviewObject.getString("author_name");
+                        r.authorImg = reviewObject.getString("profile_photo_url");
+                        r.rating = (float)reviewObject.getDouble("rating");
+                        r.comment = reviewObject.getString("text");
+                        r.dateTime = reviewObject.getLong("time");
+                        this.item.addGoogleReviews(r);
+                    }
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -125,12 +147,6 @@ public class ItemDetailManager {
 
     public void setInfoView(View view){
         this.infoView = view;
-    }
-
-    public void setPhotoView(ListView photoListView, TextView photoTextView){
-        this.photoListView = photoListView;
-        this.photoListView.setAdapter(this.photoAdapter);
-        this.photoTextView = photoTextView;
     }
 
     public void displayInfo(){
@@ -160,6 +176,22 @@ public class ItemDetailManager {
         websiteTextView.setText(String.valueOf(this.item.getWebsite()));
         Linkify.addLinks(websiteTextView, Linkify.WEB_URLS);
 
+    }
+
+    public void setPhotoView(ListView photoListView, TextView photoTextView){
+        this.photoListView = photoListView;
+        this.photoListView.setAdapter(this.photoAdapter);
+        this.photoTextView = photoTextView;
+    }
+
+    public void setReviewView(ListView reviewListView, TextView reviewTextView){
+        this.reviewListView = reviewListView;
+        this.reviewListView.setAdapter(this.reviewAdapter);
+        this.reviewTextView = reviewTextView;
+    }
+
+    public void updateReview(){
+        this.reviewAdapter.notifyDataSetChanged();
     }
 
 }

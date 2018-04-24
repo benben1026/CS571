@@ -14,6 +14,8 @@ public class ItemDetail {
     private String googlePage;
     private String website;
     private ArrayList<Bitmap> photos;
+    private ArrayList<Review> googleReviews;
+    private ArrayList<Review> yelpReviews;
 
     ItemDetail(String placeId){
         this.placeId = placeId;
@@ -24,7 +26,9 @@ public class ItemDetail {
         this.rating = -1;
         this.googlePage = null;
         this.website = null;
-        this.photos = new ArrayList<Bitmap>();
+        this.photos = new ArrayList<>();
+        this.googleReviews = new ArrayList<>();
+        this.yelpReviews = new ArrayList<>();
     }
 
     public void setName(String name){
@@ -89,6 +93,22 @@ public class ItemDetail {
 
     public ArrayList<Bitmap> getPhotos() {
         return photos;
+    }
+
+    public ArrayList<Review> getGoogleReviews() {
+        return googleReviews;
+    }
+
+    public void addGoogleReviews(Review googleReview) {
+        this.googleReviews.add(googleReview);
+    }
+
+    public ArrayList<Review> getYelpReviews() {
+        return yelpReviews;
+    }
+
+    public void addYelpReviews(Review yelpReview) {
+        this.yelpReviews.add(yelpReview);
     }
 }
 
