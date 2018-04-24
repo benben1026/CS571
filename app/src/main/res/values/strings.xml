@@ -32,6 +32,19 @@
         <item>Zoo</item>
     </string-array>
 
+    <string-array name="spinner1_array">
+        <item>Google reviews</item>
+        <item>Yelp reviews</item>
+    </string-array>
+
+    <string-array name="spinner2_array">
+        <item>Default order</item>
+        <item>Highest rating</item>
+        <item>Lowest rating</item>
+        <item>Most recent</item>
+        <item>Least recent</item>
+        <item></item>
+    </string-array>
     <string name="server_domain">cs571-nodejs.appspot.com</string>
     <integer name="data_per_page">20</integer>
 
