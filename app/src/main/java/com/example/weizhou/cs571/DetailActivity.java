@@ -23,7 +23,7 @@ public class DetailActivity extends AppCompatActivity {
         final ViewPager viewPager = findViewById(R.id.detail_viewpager);
         LinearLayout linearLayout = (LinearLayout)tabLayout.getChildAt(0);
         linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
-        //TODO: add tab divider
+        linearLayout.setDividerDrawable(getDrawable(R.drawable.tab_divider));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

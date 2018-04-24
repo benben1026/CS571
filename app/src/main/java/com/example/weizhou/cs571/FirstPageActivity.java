@@ -1,6 +1,7 @@
 package com.example.weizhou.cs571;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
@@ -20,18 +21,18 @@ public class FirstPageActivity extends AppCompatActivity implements ActivityComp
     TabLayout tabLayout = null;
     ViewPager viewPager = null;
 
-//    @SuppressLint("MissingPermission")
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-//        switch (requestCode) {
-//            case 0: {
-//                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                    LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
-//                    Objects.requireNonNull(locationManager).requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 100, ((MyApplication)getApplication()).getLocationListener());
-//                }
-//            }
-//        }
-//    }
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 0: {
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    LocationManager locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+                    Objects.requireNonNull(locationManager).requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 100, ((MyApplication)getApplication()).getLocationListener());
+                }
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class FirstPageActivity extends AppCompatActivity implements ActivityComp
         tabLayout = findViewById(R.id.first_page_tabs);
         LinearLayout linearLayout = (LinearLayout)tabLayout.getChildAt(0);
         linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
+        linearLayout.setDividerDrawable(getDrawable(R.drawable.tab_divider));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
