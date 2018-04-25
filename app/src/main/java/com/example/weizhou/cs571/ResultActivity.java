@@ -11,6 +11,7 @@ import android.widget.TextView;
 import java.util.Objects;
 
 public class ResultActivity extends AppCompatActivity {
+    private SearchResultManager searchResultManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +27,16 @@ public class ResultActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        SearchResultManager searchResultManager = new SearchResultManager(this, (ListView)findViewById(R.id.result_list), (TextView)findViewById(R.id.result_info),
+        this.searchResultManager = new SearchResultManager(this, (ListView)findViewById(R.id.result_list), (TextView)findViewById(R.id.result_info),
                 (Button) findViewById(R.id.result_previous), (Button) findViewById(R.id.result_next));
-        ((MyApplication)getApplication()).searchResultManager = searchResultManager;
-        searchResultManager.parseData(getIntent().getStringExtra("results"));
-        searchResultManager.display(1);
+        this.searchResultManager.parseData(getIntent().getStringExtra("results"));
+        this.searchResultManager.display(1);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        searchResultManager.getAdapter().notifyDataSetChanged();
     }
 
     @Override

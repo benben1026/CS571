@@ -15,7 +15,6 @@ public class MyApplication extends Application {
     Location curLocation;
     LocationListener locationListener;
     FavoriteManager favoriteManager;
-    public SearchResultManager searchResultManager;
 
     public RequestQueue getRequestQueue() {
         return requestQueue;

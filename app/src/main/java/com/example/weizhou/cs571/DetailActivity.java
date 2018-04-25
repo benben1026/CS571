@@ -104,7 +104,6 @@ public class DetailActivity extends AppCompatActivity {
                     favoriteManager.addFavorite(resultItem);
                     item.setIcon(R.drawable.ic_favorite_white_24dp);
                 }
-                ((MyApplication)getApplication()).searchResultManager.getAdapter().notifyDataSetChanged();
                 return false;
             case R.id.action_share:
                 ItemDetail itemDetail = this.itemDetailManager.item;
