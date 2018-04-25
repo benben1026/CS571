@@ -6,4 +6,5 @@ public class Review {
     public float rating;
     public Long dateTime;
     public String comment;
+    public String url;
 }

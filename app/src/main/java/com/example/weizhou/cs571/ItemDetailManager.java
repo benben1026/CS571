@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.util.Linkify;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -23,6 +24,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ItemDetailManager {
     public ItemDetail item;
     public Activity activity;
@@ -30,11 +35,11 @@ public class ItemDetailManager {
     private View infoView;
     private ListView photoListView;
     private TextView photoTextView;
-    private ListView reviewListView;
-    private TextView reviewTextView;
+    private View reviewFragmentView;
 
     private PhotoAdapter photoAdapter;
     private ReviewAdapter reviewAdapter;
+    private Uri.Builder yelpRequest;
 
     private int photoIndex;
     private GeoDataClient mGeoDataClient;
@@ -43,6 +48,8 @@ public class ItemDetailManager {
         this.item = new ItemDetail(placeId);
         this.infoView = null;
         this.activity = activity;
+        this.yelpRequest = new Uri.Builder();
+        this.yelpRequest.scheme("http").authority(activity.getResources().getString(R.string.server_domain)).appendPath("getyelpreviews");
         final Uri.Builder builder = new Uri.Builder();
         builder.scheme("http").authority(activity.getResources().getString(R.string.server_domain)).appendPath("placedetail");
         builder.appendQueryParameter("id", placeId);
@@ -51,6 +58,7 @@ public class ItemDetailManager {
             @Override
             public void onResponse(JSONObject response) {
                 parseDate(response);
+                getYelpReview();
                 displayInfo();
                 progressDialog.dismiss();
                 reviewAdapter.notifyDataSetChanged();
@@ -108,6 +116,44 @@ public class ItemDetailManager {
         });
     }
 
+    private void getYelpReview(){
+        System.out.println(this.yelpRequest.build().toString());
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, this.yelpRequest.build().toString(), null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if (response.getString("status").equalsIgnoreCase("OK")){
+                        JSONArray reviews = response.getJSONObject("data").getJSONArray("reviews");
+                        for (int i = 0; i < reviews.length(); i++){
+                            Review r = new Review();
+                            r.authorName = (((JSONObject)reviews.get(i)).getJSONObject("user")).getString("name");
+                            r.authorImg = (((JSONObject)reviews.get(i)).getJSONObject("user")).getString("image_url");
+                            r.rating = (float)((JSONObject)reviews.get(i)).getDouble("rating");
+                            r.url = ((JSONObject)reviews.get(i)).getString("url");
+                            r.comment = ((JSONObject)reviews.get(i)).getString("text");
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                            Date date = sdf.parse(((JSONObject)reviews.get(i)).getString("time_created"));
+                            r.dateTime = date.getTime();
+                            item.addYelpReviews(r);
+                        }
+                    }
+                    System.out.println("got yelp reviews");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error){
+                System.out.println(error);
+            }
+        });
+        MyApplication application = (MyApplication) activity.getApplication();
+        application.getRequestQueue().add(request);
+    }
+
     public void parseDate(JSONObject data){
         try {
             if(data.getString("status").equalsIgnoreCase("OK")){
@@ -135,9 +181,34 @@ public class ItemDetailManager {
                         r.rating = (float)reviewObject.getDouble("rating");
                         r.comment = reviewObject.getString("text");
                         r.dateTime = reviewObject.getLong("time");
+                        r.url = reviewObject.getString("author_url");
                         this.item.addGoogleReviews(r);
                     }
                 }
+                JSONArray addressComponents = result.getJSONArray("address_components");
+                String streetNumber = "", route = "";
+                for (int i = 0; i < addressComponents.length(); i++){
+                    if (((JSONObject)addressComponents.get(i)).getJSONArray("types").toString().contains("country")){
+                        yelpRequest.appendQueryParameter("country", ((JSONObject)addressComponents.get(i)).getString("short_name"));
+                    }
+                    if (((JSONObject)addressComponents.get(i)).getJSONArray("types").toString().contains("administrative_area_level_1")){
+                        yelpRequest.appendQueryParameter("state", ((JSONObject)addressComponents.get(i)).getString("short_name"));
+                    }
+                    if (((JSONObject)addressComponents.get(i)).getJSONArray("types").toString().contains("administrative_area_level_2")){
+                        yelpRequest.appendQueryParameter("city", ((JSONObject)addressComponents.get(i)).getString("short_name"));
+                    }
+                    if (((JSONObject)addressComponents.get(i)).getJSONArray("types").toString().contains("postal_code\"")){
+                        yelpRequest.appendQueryParameter("postal", ((JSONObject)addressComponents.get(i)).getString("short_name"));
+                    }
+                    if (((JSONObject)addressComponents.get(i)).getJSONArray("types").toString().contains("street_number")){
+                        streetNumber = ((JSONObject)addressComponents.get(i)).getString("short_name");
+                    }
+                    if (((JSONObject)addressComponents.get(i)).getJSONArray("types").toString().contains("route")){
+                        route = ((JSONObject)addressComponents.get(i)).getString("short_name");
+                    }
+                }
+                yelpRequest.appendQueryParameter("name", this.item.getName());
+                yelpRequest.appendQueryParameter("address", streetNumber + route);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -184,14 +255,57 @@ public class ItemDetailManager {
         this.photoTextView = photoTextView;
     }
 
-    public void setReviewView(ListView reviewListView, TextView reviewTextView){
-        this.reviewListView = reviewListView;
-        this.reviewListView.setAdapter(this.reviewAdapter);
-        this.reviewTextView = reviewTextView;
+    public void setReviewView(View view){
+        this.reviewFragmentView = view;
+        ((ListView)view.findViewById(R.id.review_list)).setAdapter(this.reviewAdapter);
     }
 
-    public void updateReview(){
-        this.reviewAdapter.notifyDataSetChanged();
+    public void displayReview(String origin, String sorting){
+        System.out.println("Display reviews from " + origin + ", in " + sorting);
+        TextView tv = this.reviewFragmentView.findViewById(R.id.review_info);
+        if (origin.equalsIgnoreCase("google reviews")){
+            if (this.item.getGoogleReviews().size() == 0){
+                tv.setText("No reviews from google");
+                tv.setVisibility(View.VISIBLE);
+                this.reviewAdapter.setData(this.item.getGoogleReviews());
+                return;
+            }
+            tv.setVisibility(View.GONE);
+            switch (sorting){
+                case "Default order":
+                    this.reviewAdapter.setData(this.item.getGoogleReviews());
+                    break;
+                case "Highest rating":
+                    break;
+                case "Lowest rating":
+                    break;
+                case "Most recent":
+                    break;
+                case "Least recent":
+                    break;
+            }
+        } else if(origin.equalsIgnoreCase("yelp reviews")){
+            if (this.item.getGoogleReviews().size() == 0){
+                tv.setText("No reviews from yelp");
+                tv.setVisibility(View.VISIBLE);
+                this.reviewAdapter.setData(this.item.getYelpReviews());
+                return;
+            }
+            tv.setVisibility(View.GONE);
+            switch (sorting){
+                case "Default order":
+                    this.reviewAdapter.setData(this.item.getYelpReviews());
+                    break;
+                case "Highest rating":
+                    break;
+                case "Lowest rating":
+                    break;
+                case "Most recent":
+                    break;
+                case "Least recent":
+                    break;
+            }
+        }
     }
 
 }

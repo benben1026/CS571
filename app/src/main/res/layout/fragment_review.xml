@@ -10,13 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/review_info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment"/>
 
         <LinearLayout
+            android:id="@+id/review_body"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
@@ -43,6 +39,11 @@
                 </Spinner>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/review_info"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/hello_blank_fragment"/>
 
             <ListView
                 android:id="@+id/review_list"

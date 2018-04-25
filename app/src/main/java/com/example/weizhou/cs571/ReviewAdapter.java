@@ -32,6 +32,11 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         mImageLoader = new ImageLoader(((MyApplication)(((Activity)ctx).getApplication())).getRequestQueue(), new BitmapCache());
     }
 
+    public void setData(ArrayList<Review> data){
+        this.data = data;
+        this.notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
         return this.data.size();
