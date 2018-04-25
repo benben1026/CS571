@@ -1,6 +1,8 @@
 package com.example.weizhou.cs571;
 
-public class ResultItem {
+import java.io.Serializable;
+
+public class ResultItem implements Serializable {
     public String placeId;
     public String icon;
     public String name;
@@ -12,4 +14,5 @@ public class ResultItem {
         this.name = name;
         this.vicinity = vicnity;
     }
+
 }

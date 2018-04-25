@@ -75,7 +75,7 @@ public class FavoriteAdapter extends ArrayAdapter<ResultItem> {
             @Override
             public void onClick(View v) {
                 fm.onFavoriteClick((ResultItem)v.getTag());
-                fm.updateMsg();
+                fm.display();
             }
         });
 
