@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -217,7 +218,7 @@ public class ItemDetailManager {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            //TODO
+            Toast.makeText(this.activity, "Failed to parse detail data.", Toast.LENGTH_SHORT).show();
         }
     }
 

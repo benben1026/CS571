@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -153,6 +154,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onErrorResponse(VolleyError error){
                 System.out.println(error);
+                Toast.makeText(getActivity(), "Network error. Please try later.", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
         });
