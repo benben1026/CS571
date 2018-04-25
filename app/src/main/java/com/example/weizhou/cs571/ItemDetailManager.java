@@ -231,26 +231,49 @@ public class ItemDetailManager {
         }
         ((TextView)this.infoView.findViewById(R.id.address_value)).setText(this.item.getAddress());
 
-        TextView phoneTextView = this.infoView.findViewById(R.id.phone_value);
-        phoneTextView.setText(this.item.getPhoneNumber());
-        Linkify.addLinks(phoneTextView, Linkify.PHONE_NUMBERS);
+        if (this.item.getPhoneNumber() == null){
+            this.infoView.findViewById(R.id.linear_phone_name).setVisibility(View.GONE);
+        }else{
+            TextView phoneTextView = this.infoView.findViewById(R.id.phone_value);
+            phoneTextView.setText(this.item.getPhoneNumber());
+            Linkify.addLinks(phoneTextView, Linkify.PHONE_NUMBERS);
+            this.infoView.findViewById(R.id.linear_phone_name).setVisibility(View.VISIBLE);
+        }
 
-        ((TextView)this.infoView.findViewById(R.id.price_level_value)).setText(String.valueOf(this.item.getPriceLevel()));
-        //((TextView)this.infoView.findViewById(R.id.rating_value)).setText(String.valueOf(this.item.getRating()));
-        //Display rating star, if rate == -1, set the whole layout invisible
+        if(this.item.getPriceLevel() == -1){
+            this.infoView.findViewById(R.id.linear_price_level_name).setVisibility(View.GONE);
+        }else{
+            String level = "";
+            for (int i = 0; i < this.item.getPriceLevel(); i++){ level += "$"; }
+            ((TextView)this.infoView.findViewById(R.id.price_level_value)).setText(level);
+            this.infoView.findViewById(R.id.linear_price_level_name).setVisibility(View.VISIBLE);
+        }
+
+
         if(this.item.getRating() == -1) {
             this.infoView.findViewById(R.id.linear_rating_name).setVisibility(View.GONE);
         } else {
             ((RatingBar)this.infoView.findViewById(R.id.rating_star)).setRating(this.item.getRating());
+            this.infoView.findViewById(R.id.linear_rating_name).setVisibility(View.VISIBLE);
         }
 
-        TextView googlePageTextView = this.infoView.findViewById(R.id.google_page_value);
-        googlePageTextView.setText(String.valueOf(this.item.getGooglePage()));
-        Linkify.addLinks(googlePageTextView, Linkify.WEB_URLS);
+        if(this.item.getGooglePage() == null){
+            this.infoView.findViewById(R.id.linear_google_page_name).setVisibility(View.GONE);
+        }else{
+            TextView googlePageTextView = this.infoView.findViewById(R.id.google_page_value);
+            googlePageTextView.setText(String.valueOf(this.item.getGooglePage()));
+            Linkify.addLinks(googlePageTextView, Linkify.WEB_URLS);
+            this.infoView.findViewById(R.id.linear_google_page_name).setVisibility(View.VISIBLE);
+        }
 
-        TextView websiteTextView = this.infoView.findViewById(R.id.website_value);
-        websiteTextView.setText(String.valueOf(this.item.getWebsite()));
-        Linkify.addLinks(websiteTextView, Linkify.WEB_URLS);
+        if(this.item.getWebsite() == null){
+            this.infoView.findViewById(R.id.linear_website_name).setVisibility(View.GONE);
+        }else{
+            TextView websiteTextView = this.infoView.findViewById(R.id.website_value);
+            websiteTextView.setText(String.valueOf(this.item.getWebsite()));
+            Linkify.addLinks(websiteTextView, Linkify.WEB_URLS);
+            this.infoView.findViewById(R.id.linear_website_name).setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -299,7 +322,7 @@ public class ItemDetailManager {
                     break;
             }
         } else if(origin.equalsIgnoreCase("yelp reviews")){
-            if (this.item.getGoogleReviews().size() == 0){
+            if (this.item.getYelpReviews().size() == 0){
                 tv.setText("No reviews from yelp");
                 tv.setVisibility(View.VISIBLE);
                 this.reviewAdapter.setData(this.item.getYelpReviews());
