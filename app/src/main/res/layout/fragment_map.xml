@@ -5,13 +5,54 @@
     android:layout_height="match_parent"
     tools:context=".MapFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        android:textSize="@dimen/text_size_large"
-        android:layout_marginTop="200dp"
-        android:gravity="center_horizontal"/>
+        tools:context="com.thm64.a571hw9.map.MapFragment"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/map_from"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="From"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <AutoCompleteTextView
+            android:id="@+id/map_from_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Type in the Location"
+            android:inputType="text"
+            app:layout_constraintTop_toBottomOf="@id/map_from" />
+
+        <TextView
+            android:id="@+id/map_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Travel mode"
+            app:layout_constraintTop_toBottomOf="@id/map_from_input" />
+
+        <Spinner
+            android:id="@+id/map_mode_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/travel_mode_array"
+            app:layout_constraintTop_toBottomOf="@id/map_mode" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/map_map"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingBottom="20dp"
+            android:paddingTop="20dp"
+            app:layout_constraintHeight_min="300dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/map_mode_spinner" />
+
+    </android.support.constraint.ConstraintLayout>
+
 
 </FrameLayout>

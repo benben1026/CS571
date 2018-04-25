@@ -12,16 +12,21 @@ import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlaceAdapter extends ArrayAdapter<String> {
     private GeoDataClient geoDataClient;
     private AutoCompleteTextView autoCompleteTextView;
     long lastUpdate;
+    private List<String> ids;
 
     public PlaceAdapter(@NonNull Context context, int resource, GeoDataClient client, AutoCompleteTextView textView) {
         super(context, resource);
         geoDataClient = client;
         autoCompleteTextView = textView;
         lastUpdate = -1;
+        this.ids = new ArrayList<>();
     }
 
     public void getPredictions(CharSequence location) {
@@ -37,8 +42,10 @@ public class PlaceAdapter extends ArrayAdapter<String> {
                     Log.i("Google Place", "Task Failed");
                 }
                 clear();
+                ids.clear();
                 AutocompletePredictionBufferResponse response = completeTask.getResult();
                 for (AutocompletePrediction prediction : response) {
+                    ids.add(prediction.getPlaceId());
                     add(prediction.getFullText(null).toString());
                 }
                 response.release();
@@ -46,5 +53,9 @@ public class PlaceAdapter extends ArrayAdapter<String> {
                 getFilter().filter(autoCompleteTextView.getText());
             }
         });
+    }
+
+    public List<String> getIds() {
+        return ids;
     }
 }

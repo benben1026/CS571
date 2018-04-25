@@ -43,7 +43,13 @@
         <item>Lowest rating</item>
         <item>Most recent</item>
         <item>Least recent</item>
-        <item></item>
+    </string-array>
+
+    <string-array name="travel_mode_array">
+        <item>Driving</item>
+        <item>Bicycling</item>
+        <item>Transit</item>
+        <item>Walking</item>
     </string-array>
     <string name="server_domain">cs571-nodejs.appspot.com</string>
     <integer name="data_per_page">20</integer>

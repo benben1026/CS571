@@ -17,6 +17,9 @@ public class ItemDetail {
     private ArrayList<Review> googleReviews;
     private ArrayList<Review> yelpReviews;
 
+    public double lng;
+    public double lat;
+
     ItemDetail(String placeId){
         this.placeId = placeId;
         this.name = null;

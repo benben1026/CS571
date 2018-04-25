@@ -101,6 +101,7 @@ public class ItemDetailManager {
         try{
             photoMetadata = photoMetadataBuffer.get(this.photoIndex);
         } catch(Exception e){
+            photoMetadataBuffer.release();
             return;
         }
         Task<PlacePhotoResponse> photoResponse = mGeoDataClient.getPhoto(photoMetadata);
@@ -187,6 +188,8 @@ public class ItemDetailManager {
                         this.item.addGoogleReviews(r);
                     }
                 }
+                item.lat = result.getJSONObject("geometry").getJSONObject("location").getDouble("lat");
+                item.lng = result.getJSONObject("geometry").getJSONObject("location").getDouble("lng");
                 JSONArray addressComponents = result.getJSONArray("address_components");
                 String streetNumber = "", route = "";
                 for (int i = 0; i < addressComponents.length(); i++){
