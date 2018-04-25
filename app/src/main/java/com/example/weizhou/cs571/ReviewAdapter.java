@@ -2,6 +2,8 @@ package com.example.weizhou.cs571;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -52,7 +54,16 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
             view = convertView;
         }
 
-        Review review = this.data.get(position);
+        final Review review = this.data.get(position);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(review.url));
+                ctx.startActivity(browserIntent);
+            }
+        });
+
 
         NetworkImageView profile = view.findViewById(R.id.reviewer_img);
         profile.setImageUrl(review.authorImg, mImageLoader);
