@@ -1,6 +1,8 @@
 package com.example.weizhou.cs571;
 
 import android.content.ClipData;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -85,21 +87,6 @@ public class DetailActivity extends AppCompatActivity {
         } else {
             item.setIcon(R.drawable.ic_favorite_border_white_24dp);
         }
-
-        item.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                if (favoriteManager.contain(resultItem.placeId)){
-                    favoriteManager.removeFavorite(resultItem.placeId);
-                    item.setIcon(R.drawable.ic_favorite_border_white_24dp);
-                } else {
-                    favoriteManager.addFavorite(resultItem);
-                    item.setIcon(R.drawable.ic_favorite_white_24dp);
-                }
-                ((MyApplication)getApplication()).searchResultManager.getAdapter().notifyDataSetChanged();
-                return true;
-            }
-        });
         return true;
     }
 
@@ -110,10 +97,21 @@ public class DetailActivity extends AppCompatActivity {
                 super.onBackPressed();
                 return false;
             case R.id.action_favorite:
-
+                if (favoriteManager.contain(resultItem.placeId)){
+                    favoriteManager.removeFavorite(resultItem.placeId);
+                    item.setIcon(R.drawable.ic_favorite_border_white_24dp);
+                } else {
+                    favoriteManager.addFavorite(resultItem);
+                    item.setIcon(R.drawable.ic_favorite_white_24dp);
+                }
+                ((MyApplication)getApplication()).searchResultManager.getAdapter().notifyDataSetChanged();
                 return false;
             case R.id.action_share:
-
+                ItemDetail itemDetail = this.itemDetailManager.item;
+                String twitterURL = "https://twitter.com/intent/tweet?text=Check out " + itemDetail.getName() + " located at " + itemDetail.getAddress()
+                        + ". Website:&url=" + itemDetail.getWebsite() + "&hashtags=TravelAndEntertainmentSearch";
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitterURL));
+                startActivity(browserIntent);
                 return false;
         }
         return super.onOptionsItemSelected(item);
