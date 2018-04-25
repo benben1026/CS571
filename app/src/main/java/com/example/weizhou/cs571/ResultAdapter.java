@@ -64,6 +64,8 @@ public class ResultAdapter extends ArrayAdapter<ResultItem> {
                 Intent intent = new Intent(ctx, DetailActivity.class);
                 intent.putExtra("placeId", item.placeId);
                 intent.putExtra("name", item.name);
+                intent.putExtra("icon", item.icon);
+                intent.putExtra("vicinity", item.vicinity);
                 ctx.startActivity(intent);
             }
         });

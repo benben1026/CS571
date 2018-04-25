@@ -85,6 +85,10 @@ public class SearchResultManager {
         });
     }
 
+    public ResultAdapter getAdapter() {
+        return adapter;
+    }
+
     public void parseData(String dataString){
         JSONObject dataObject;
         try {

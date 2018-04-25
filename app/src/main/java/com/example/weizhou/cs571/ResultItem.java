@@ -8,11 +8,11 @@ public class ResultItem implements Serializable {
     public String name;
     public String vicinity;
 
-    ResultItem(String placeId, String icon, String name, String vicnity){
+    ResultItem(String placeId, String icon, String name, String vicinity){
         this.placeId = placeId;
         this.icon = icon;
         this.name = name;
-        this.vicinity = vicnity;
+        this.vicinity = vicinity;
     }
 
 }

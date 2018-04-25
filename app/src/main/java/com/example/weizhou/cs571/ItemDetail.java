@@ -31,6 +31,10 @@ public class ItemDetail {
         this.yelpReviews = new ArrayList<>();
     }
 
+    public String getPlaceId() {
+        return placeId;
+    }
+
     public void setName(String name){
         this.name = name;
     }

@@ -26,10 +26,11 @@ public class ResultActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
-        SearchResultManager rm = new SearchResultManager(this, (ListView)findViewById(R.id.result_list), (TextView)findViewById(R.id.result_info),
+        SearchResultManager searchResultManager = new SearchResultManager(this, (ListView)findViewById(R.id.result_list), (TextView)findViewById(R.id.result_info),
                 (Button) findViewById(R.id.result_previous), (Button) findViewById(R.id.result_next));
-        rm.parseData(getIntent().getStringExtra("results"));
-        rm.display(1);
+        ((MyApplication)getApplication()).searchResultManager = searchResultManager;
+        searchResultManager.parseData(getIntent().getStringExtra("results"));
+        searchResultManager.display(1);
     }
 
     @Override
