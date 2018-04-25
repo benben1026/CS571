@@ -64,7 +64,7 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         rating.setRating(review.rating);
 
         TextView time = view.findViewById(R.id.review_time);
-        Date date = new Date(review.dateTime * 1000);
+        Date date = new Date(review.dateTime);
         android.text.format.DateFormat df = new android.text.format.DateFormat();
         time.setText(df.format("yyyy-MM-dd hh:mm:ss", date));
 

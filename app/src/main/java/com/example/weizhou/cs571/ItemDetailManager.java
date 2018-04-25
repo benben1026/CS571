@@ -26,6 +26,8 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 public class ItemDetailManager {
@@ -180,7 +182,7 @@ public class ItemDetailManager {
                         r.authorImg = reviewObject.getString("profile_photo_url");
                         r.rating = (float)reviewObject.getDouble("rating");
                         r.comment = reviewObject.getString("text");
-                        r.dateTime = reviewObject.getLong("time");
+                        r.dateTime = reviewObject.getLong("time") * 1000;
                         r.url = reviewObject.getString("author_url");
                         this.item.addGoogleReviews(r);
                     }
@@ -271,17 +273,26 @@ public class ItemDetailManager {
                 return;
             }
             tv.setVisibility(View.GONE);
+            ArrayList<Review> copyOfReviews = (ArrayList<Review>) this.item.getGoogleReviews().clone();
             switch (sorting){
                 case "Default order":
                     this.reviewAdapter.setData(this.item.getGoogleReviews());
                     break;
                 case "Highest rating":
+                    Collections.sort(copyOfReviews, Review.highestRating);
+                    this.reviewAdapter.setData(copyOfReviews);
                     break;
                 case "Lowest rating":
+                    Collections.sort(copyOfReviews, Review.lowestRating);
+                    this.reviewAdapter.setData(copyOfReviews);
                     break;
                 case "Most recent":
+                    Collections.sort(copyOfReviews, Review.mostRecent);
+                    this.reviewAdapter.setData(copyOfReviews);
                     break;
                 case "Least recent":
+                    Collections.sort(copyOfReviews, Review.leastRecent);
+                    this.reviewAdapter.setData(copyOfReviews);
                     break;
             }
         } else if(origin.equalsIgnoreCase("yelp reviews")){
@@ -292,17 +303,26 @@ public class ItemDetailManager {
                 return;
             }
             tv.setVisibility(View.GONE);
+            ArrayList<Review> copyOfReviews = (ArrayList<Review>) this.item.getYelpReviews().clone();
             switch (sorting){
                 case "Default order":
                     this.reviewAdapter.setData(this.item.getYelpReviews());
                     break;
                 case "Highest rating":
+                    Collections.sort(copyOfReviews, Review.highestRating);
+                    this.reviewAdapter.setData(copyOfReviews);
                     break;
                 case "Lowest rating":
+                    Collections.sort(copyOfReviews, Review.lowestRating);
+                    this.reviewAdapter.setData(copyOfReviews);
                     break;
                 case "Most recent":
+                    Collections.sort(copyOfReviews, Review.mostRecent);
+                    this.reviewAdapter.setData(copyOfReviews);
                     break;
                 case "Least recent":
+                    Collections.sort(copyOfReviews, Review.leastRecent);
+                    this.reviewAdapter.setData(copyOfReviews);
                     break;
             }
         }
