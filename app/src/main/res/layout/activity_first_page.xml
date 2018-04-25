@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:tabBackground="@color/colorPrimary"
-        app:tabGravity="center">
+        app:tabGravity="fill">
 
         <android.support.design.widget.TabItem
             android:layout_width="wrap_content"
