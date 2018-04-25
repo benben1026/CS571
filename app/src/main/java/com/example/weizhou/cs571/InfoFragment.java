@@ -23,7 +23,9 @@ public class InfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_info, container, false);
-        ((DetailActivity)getActivity()).itemDetailManager.setInfoView(view);
+        ItemDetailManager im = ((DetailActivity)getActivity()).itemDetailManager;
+        im.setInfoView(view);
+        im.displayInfo();
         // Inflate the layout for this fragment
         return view;
     }
