@@ -7,13 +7,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
@@ -69,7 +69,7 @@ public class MapFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                 if (!task.isSuccessful()){
-                    //TODO
+                    Toast.makeText(getActivity(), "Fail to get this location.", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 PlaceBufferResponse response = task.getResult();
@@ -85,7 +85,7 @@ public class MapFragment extends Fragment {
                     @Override
                     public void onDirectionSuccess(Direction direction, String rawBody) {
                         if (!direction.isOK()) {
-                            //TODO
+                            Toast.makeText(getActivity(), "Fail to get direction.", Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -93,8 +93,7 @@ public class MapFragment extends Fragment {
 
                         List<Route> routes = direction.getRouteList();
                         if (routes.isEmpty()) {
-                            Log.i("Direction", "No route found");
-                            //TODO
+                            Toast.makeText(getActivity(), "No route found.", Toast.LENGTH_SHORT).show();
                         }
                         LatLngBounds.Builder builder = new LatLngBounds.Builder();
                         builder.include(from);
@@ -108,8 +107,8 @@ public class MapFragment extends Fragment {
                     }
                     @Override
                     public void onDirectionFailure(Throwable t) {
-                        Log.i("Direction", "Cannot get direction");
-                        //TODO
+                        Toast.makeText(getActivity(), "Fail to get direction.", Toast.LENGTH_SHORT).show();
+                        return;
                     }
                 });
             }
