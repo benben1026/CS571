@@ -1,11 +1,13 @@
 package com.example.weizhou.cs571;
 
+import android.accounts.NetworkErrorException;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -82,17 +84,21 @@ public class ItemDetailManager {
         this.photoAdapter = new PhotoAdapter(activity, this.item.getPhotos());
 
         mGeoDataClient = Places.getGeoDataClient(activity, null);
-        final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(placeId);
-        photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
-            @Override
-            public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
-                // Get the list of photos.
-                PlacePhotoMetadataResponse photos = task.getResult();
-                // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
-                PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
-                photoLoadingCallback(photoMetadataBuffer);
-            }
-        });
+        try{
+            final Task<PlacePhotoMetadataResponse> photoMetadataResponse = mGeoDataClient.getPlacePhotos(placeId);
+            photoMetadataResponse.addOnCompleteListener(new OnCompleteListener<PlacePhotoMetadataResponse>() {
+                @Override
+                public void onComplete(@NonNull Task<PlacePhotoMetadataResponse> task) {
+                    // Get the list of photos.
+                    PlacePhotoMetadataResponse photos = task.getResult();
+                    // Get the PlacePhotoMetadataBuffer (metadata for all of the photos).
+                    PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                    photoLoadingCallback(photoMetadataBuffer);
+                }
+            });
+        }catch (Exception e){
+            Log.i("Detail Page", "Fail to get photo");
+        }
 
         this.reviewAdapter = new ReviewAdapter(activity, this.item.getGoogleReviews());
     }

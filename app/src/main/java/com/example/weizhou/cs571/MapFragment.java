@@ -50,14 +50,17 @@ public class MapFragment extends Fragment {
 
     private ItemDetailManager itemDetailManager;
 
-    private String fromId = null;
+    private String fromId;
+    private String fromName;
 
     public MapFragment() {
         // Required empty public constructor
+        this.fromId = null;
+        this.fromName = null;
     }
 
     private void updateRoute(){
-        if (this.fromId == null){
+        if (this.fromId == null || this.fromName == null){
             return;
         }
 
@@ -69,6 +72,7 @@ public class MapFragment extends Fragment {
         if (map != null) {
             map.clear();
             map.addMarker(new MarkerOptions().position(destination).title(itemDetail.getName())).showInfoWindow();
+            //map.addMarker(new MarkerOptions().position(destination).title(itemDetail.getName()));
         }
 
         getPlaceTask.addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
@@ -79,8 +83,9 @@ public class MapFragment extends Fragment {
                     return;
                 }
                 PlaceBufferResponse response = task.getResult();
-                Place place = response.get(0);
+                final Place place = response.get(0);
                 final LatLng from = place.getLatLng();
+                final String placeName = place.getName().toString();
                 response.release();
 
                 Spinner modeSpinner = getActivity().findViewById(R.id.map_mode_spinner);
@@ -108,7 +113,7 @@ public class MapFragment extends Fragment {
 
                         map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 250));
                         map.addPolyline(new PolylineOptions().addAll(routes.get(0).getOverviewPolyline().getPointList()).color(Color.BLUE));
-                        map.addMarker(new MarkerOptions().position(from));
+                        map.addMarker(new MarkerOptions().position(from).title(placeName)).showInfoWindow();
 
                     }
                     @Override
@@ -153,6 +158,7 @@ public class MapFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
                 fromId = adapter.getIds().get(position);
+                fromName = adapter.getItem(position);
                 updateRoute();
             }
         });
