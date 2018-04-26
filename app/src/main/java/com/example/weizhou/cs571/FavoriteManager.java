@@ -59,6 +59,10 @@ public class FavoriteManager {
         }
     }
 
+    public FavoriteAdapter getAdapter() {
+        return adapter;
+    }
+
     public void addFavorite(ResultItem item){
         this.data.add(item);
         Toast.makeText(this.activity, item.name + " was added to favorites", Toast.LENGTH_SHORT).show();

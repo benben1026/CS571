@@ -138,7 +138,10 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
             passCheck = false;
         }
 
-        if(!passCheck) return;
+        if(!passCheck) {
+            Toast.makeText(getActivity(), "Please fix all fields with errors", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         progressDialog = ProgressDialog.show(getActivity(), null, "Fetching results", true);
         System.out.println(param.getUri(getActivity()));
@@ -177,6 +180,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener{
 
         EditText locationInput = v.findViewById(R.id.from_location_input);
         locationInput.setText("");
+
+        v.findViewById(R.id.keyword_warning).setVisibility(View.GONE);
+        v.findViewById(R.id.from_location_warning).setVisibility(View.GONE);
     }
 
 }

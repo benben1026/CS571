@@ -50,12 +50,18 @@ public class MapFragment extends Fragment {
 
     private ItemDetailManager itemDetailManager;
 
+    private String fromId = null;
+
     public MapFragment() {
         // Required empty public constructor
     }
 
-    private void updateRoute(String fromId){
-        Task<PlaceBufferResponse> getPlaceTask = mGeoDataClient.getPlaceById(fromId);
+    private void updateRoute(){
+        if (this.fromId == null){
+            return;
+        }
+
+        Task<PlaceBufferResponse> getPlaceTask = mGeoDataClient.getPlaceById(this.fromId);
 
         ItemDetail itemDetail = this.itemDetailManager.item;
         final LatLng destination = new LatLng(itemDetail.lat, itemDetail.lng);
@@ -146,7 +152,8 @@ public class MapFragment extends Fragment {
         textView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
-                updateRoute(adapter.getIds().get(position));
+                fromId = adapter.getIds().get(position);
+                updateRoute();
             }
         });
 
@@ -154,10 +161,7 @@ public class MapFragment extends Fragment {
         modeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position >= adapter.getIds().size()){
-                    return;
-                }
-                updateRoute(adapter.getIds().get(position));
+                updateRoute();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
